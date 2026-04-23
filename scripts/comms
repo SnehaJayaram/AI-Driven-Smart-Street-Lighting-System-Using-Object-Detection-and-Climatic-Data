@@ -1,0 +1,38 @@
+"""
+Communication Module
+
+Handles:
+- Sending commands to NodeMCU
+- Receiving telemetry data
+"""
+
+import serial
+import time
+
+# Update port as per your Raspberry Pi
+ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
+time.sleep(2)
+
+
+def send_command(command):
+    """
+    Send command to NodeMCU
+    """
+    try:
+        ser.write((command + "\n").encode())
+    except Exception as e:
+        print("Send Error:", e)
+
+
+def receive_data():
+    """
+    Receive telemetry from NodeMCU
+    """
+    try:
+        if ser.in_waiting > 0:
+            data = ser.readline().decode().strip()
+            return data
+    except Exception as e:
+        print("Receive Error:", e)
+
+    return None
