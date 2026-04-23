@@ -1,48 +1,56 @@
 # 💡 AI-Driven Smart Street Lighting System
-### Using Object Detection and Climatic Data
+### Edge AI Implementation using Raspberry Pi 4B, Object Detection, and Climatic Data
 
-[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
-[![Arduino](https://img.shields.io/badge/Hardware-Arduino%20Uno-00979D.svg)](https://www.arduino.cc/)
-[![YOLOv8](https://img.shields.io/badge/AI-Object%20Detection-red.svg)](#)
+[![Hardware](https://img.shields.io/badge/Hardware-Raspberry%20Pi%204B-C51A4A.svg)](https://www.raspberrypi.com/)
+[![AI](https://img.shields.io/badge/AI-YOLOv8-red.svg)](#)
+[![Protocol](https://img.shields.io/badge/Protocol-MQTT%2FHTTP-blue.svg)](#)
 
-## 🎯 Project Objective
-Urban street lighting often runs at 100% capacity even when streets are empty or during bright moonlit nights, leading to massive energy wastage. This project introduces a **Context-Aware Lighting System** that adjusts brightness based on two primary inputs:
-1. **Human/Vehicle Presence:** Detected via real-time computer vision.
-2. **Climatic Conditions:** Ambient light (LDR) and weather data to adjust for fog, rain, or clear nights.
+## 📌 Project Overview
+This system addresses urban energy inefficiency by introducing a **Context-Aware Lighting System**. By deploying **Edge AI** on a Raspberry Pi 4B, the project utilizes real-time **Object Detection** (YOLO) and **Sensor Fusion** (LDR & Climatic data) to control street lighting dynamically.
 
----
-
-## 📊 System Architecture & Results
-### 1. Object Detection in Action
-![Detection Result](./assets/object_detection_sample.png)
-*Figure 1: The system identifying pedestrians and vehicles to trigger "Active Lighting" mode.*
-
-### 2. Hardware Prototype
-![Hardware Setup](./assets/hardware_prototype.jpg)
-*Figure 2: The integrated Arduino circuit with LDR, PIR, and LED modules.*
+The system transitions from low-power idle modes to full luminosity only when road users are detected or when adverse weather conditions (fog/rain) necessitate increased visibility.
 
 ---
 
-## 🧠 How it Works
-- **The Vision Layer:** Uses a pre-trained **YOLO (You Only Look Once)** model to identify "Road Users." If the street is empty, the lights dim to 10% to save power.
-- **The Climatic Layer:** LDR sensors monitor lux levels. If climatic data indicates heavy fog or rain, the system increases brightness even if no objects are detected, ensuring safety.
-- **The Integration:** A Python script bridges the AI model with the **Arduino Uno** via Serial Communication, sending real-time dimming commands.
+## ⚙️ System Architecture
+The project operates through a multi-layered communication and decision pipeline:
+1. **Vision Layer:** Raspberry Pi Camera captures real-time video; YOLO model performs inference at the edge.
+2. **Communication Layer:** Detection results are transmitted via **MQTT/HTTP** protocols to a NodeMCU (ESP8266) node.
+3. **Climatic Layer:** NodeMCU integrates real-time data from **LDR** and **DHT11** sensors.
+4. **Control Logic:** A decision matrix adjusts PWM signals/Relays to dim or brighten lights based on the combined vision and environmental inputs.
 
-## 👥 Team & Collaboration
-This project was a collaborative effort by a **group of 4 members**. My technical focus included:
-- **AI-Hardware Bridge:** Developed the Python-to-Arduino communication protocol (PySerial).
-- **Vision Integration:** Implementing the Object Detection logic and defining threshold levels for light activation.
-- **System Documentation:** Designing the logical flow and performance evaluation metrics.
+
+
+---
+
+## 🛠️ Technologies & Hardware
+**Compute & Control:**
+- **Raspberry Pi 4B:** Local AI inference and master controller.
+- **NodeMCU (ESP8266):** Wireless actuator and sensor gateway.
+- **Sensors:** Camera Module, LDR (Lux levels), DHT11 (Climatic data).
+
+**Software Stack:**
+- **AI/CV:** Python, OpenCV, YOLO (Ultralytics).
+- **Communication:** MQTT Protocol, PySerial.
+- **Firmware:** C++ (Arduino IDE) for NodeMCU logic.
+
+---
+
+## 👥 Group Project & Collaboration
+This project was developed as a collaborative major project by a team of four. My primary technical contributions included:
+- **Edge AI Deployment:** Optimizing the YOLO architecture for the Raspberry Pi 4B environment.
+- **Communication Pipeline:** Developing the MQTT/HTTP bridge between the Pi and the NodeMCU actuator.
+- **System Logic:** Designing the decision-making algorithms that balance energy saving with safety requirements.
 
 ---
 
 ## 📂 Project Structure
-- `arduino/`: `.ino` files for the microcontroller logic and sensor calibration.
-- `vision_module/`: Python scripts for YOLO detection and video processing.
-- `data/`: Sample logs of climatic data and power consumption records.
-- `assets/`: Circuit diagrams, detection screenshots, and hardware photos.
+- `models/`: Trained YOLO weight files and configuration.
+- `scripts/`: Python source code for detection and communication.
+- `hardware/`: Circuit diagrams and pinout configurations.
+- `requirements.txt`: Environment dependencies.
 
-## 🚀 Getting Started
-1. **Hardware Setup:** Connect your Arduino as per the diagram in `/assets`.
-2. **Install Dependencies:** ```bash
-   pip install ultralytics pyserial opencv-python
+## 🚀 Setup & Execution
+1. **Clone the Repository:**
+   ```bash
+   git clone [https://github.com/your-username/smart-ai-street-light.git](https://github.com/your-username/smart-ai-street-light.git)
