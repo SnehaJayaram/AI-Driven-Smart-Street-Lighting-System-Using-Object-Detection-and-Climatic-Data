@@ -23,5 +23,3 @@ This project presents an intelligent street lighting system that uses AI-based o
 3. If an object is detected → command sent via MQTT.
 4. NodeMCU receives signal and controls street light.
 5. Sensors adjust brightness based on environment.
-
-## 📂 Project Structure
